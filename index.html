@@ -175,8 +175,7 @@
         };
 
         // Create textures from SVG animation frames
-        let dogTextures = [];
-        let dogTexturesLoaded = 0;
+        const dogTextures = new Array(6).fill(null);
         const dogHeight = 120;
         const dogWidth = dogHeight * 2.5; // Approximate aspect ratio
 
@@ -195,7 +194,7 @@
                     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
                     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
                     dogTextures[index] = texture;
-                    dogTexturesLoaded++;
+                    console.log('Loaded frame', index);
                     URL.revokeObjectURL(url);
                 };
                 img.src = url;
@@ -403,8 +402,16 @@
         function drawDog() {
             const { x, y, direction, frameIndex } = dog;
 
-            // Get current animation frame texture
-            const currentTexture = dogTextures[frameIndex] || dogTextures[0];
+            // Get current animation frame texture - find first available if current not loaded
+            let currentTexture = dogTextures[frameIndex];
+            if (!currentTexture) {
+                for (let i = 0; i < dogTextures.length; i++) {
+                    if (dogTextures[i]) {
+                        currentTexture = dogTextures[i];
+                        break;
+                    }
+                }
+            }
             if (!currentTexture) return;
 
             // Throwing rotation
@@ -503,8 +510,8 @@
                         dog.speed = Math.min(dog.speed + 0.5, dog.maxSpeed);
                         dog.x += dog.direction * dog.speed;
 
-                        // Animate through frames based on speed
-                        dog.frameTime += dog.speed * 0.015;
+                        // Animate through frames based on speed - faster animation
+                        dog.frameTime += deltaTime * 12; // 12 frames per second base
                         if (dog.frameTime >= 1) {
                             dog.frameTime = 0;
                             dog.frameIndex = (dog.frameIndex + 1) % 6;
