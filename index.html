@@ -181,7 +181,8 @@
         const dogTextures = new Array(6).fill(null);
         let dogStandingTexture = null;
         const dogHeight = 120;
-        const dogWidth = dogHeight * 2.5; // Approximate aspect ratio
+        const dogRunningWidth = dogHeight * 2.5; // Running frames aspect ~2.5
+        const dogStandingWidth = dogHeight * (1756 / 1097); // Standing SVG aspect ratio ~1.6
 
         function loadSVGTexture(svgContent, callback) {
             const img = new Image();
@@ -237,7 +238,8 @@
             return buffer;
         }
 
-        const dogBuffer = createSpriteBuffer(dogWidth, dogHeight);
+        const dogRunningBuffer = createSpriteBuffer(dogRunningWidth, dogHeight);
+        const dogStandingBuffer = createSpriteBuffer(dogStandingWidth, dogHeight);
 
         // Create rectangle geometry
         function createRectBuffer(width, height, color) {
@@ -432,8 +434,13 @@
 
             // Use standing texture when idle, running frames when moving
             let currentTexture;
+            let currentBuffer;
+            let currentWidth;
+
             if (dog.state === 'running') {
                 currentTexture = dogTextures[frameIndex];
+                currentBuffer = dogRunningBuffer;
+                currentWidth = dogRunningWidth;
                 // Fallback if frame not loaded
                 if (!currentTexture) {
                     for (let i = 0; i < dogTextures.length; i++) {
@@ -446,6 +453,8 @@
             } else {
                 // Idle, grabbing, throwing - use standing pose
                 currentTexture = dogStandingTexture;
+                currentBuffer = dogStandingBuffer;
+                currentWidth = dogStandingWidth;
             }
             if (!currentTexture) return;
 
@@ -456,12 +465,12 @@
             }
 
             // Draw the dog sprite (flip based on direction)
-            drawSprite(dogBuffer, currentTexture, x, y, rotation, direction, 1);
+            drawSprite(currentBuffer, currentTexture, x, y, rotation, direction, 1);
 
             // If holding a notification, draw it near the mouth (front of dog)
             if (dog.holdingRect) {
                 const rect = dog.holdingRect;
-                const holdX = x + (dogWidth * 0.35) * direction;
+                const holdX = x + (currentWidth * 0.35) * direction;
                 const holdY = y - 10;
                 drawNotification(rect.notifIndex, holdX, holdY, dog.throwAngle * direction, direction, 1);
             }
