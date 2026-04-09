@@ -107,14 +107,16 @@
             }
         `;
 
-        // Fragment shader for textured sprites
+        // Fragment shader for textured sprites with alpha support
         const fsTextureSource = `
             precision mediump float;
             varying vec2 vTexCoord;
             uniform sampler2D uTexture;
+            uniform float uAlpha;
 
             void main() {
-                gl_FragColor = texture2D(uTexture, vTexCoord);
+                vec4 color = texture2D(uTexture, vTexCoord);
+                gl_FragColor = vec4(color.rgb, color.a * uAlpha);
             }
         `;
 
@@ -175,6 +177,7 @@
             uRotation: gl.getUniformLocation(textureProgram, 'uRotation'),
             uScale: gl.getUniformLocation(textureProgram, 'uScale'),
             uTexture: gl.getUniformLocation(textureProgram, 'uTexture'),
+            uAlpha: gl.getUniformLocation(textureProgram, 'uAlpha'),
         };
 
         // Create textures from SVG animation frames
@@ -277,6 +280,7 @@
             bobPhase: 0,
             frameIndex: 0,
             frameTime: 0,
+            prevFrameIndex: 0,
         };
 
         const rectangles = [];
@@ -407,7 +411,7 @@
             drawSprite(notifBuffer, notificationTextures[notifIndex], x, y, rotation, scaleX, scaleY);
         }
 
-        function drawSprite(buffer, texture, x, y, rotation = 0, scaleX = 1, scaleY = 1) {
+        function drawSprite(buffer, texture, x, y, rotation = 0, scaleX = 1, scaleY = 1, alpha = 1) {
             if (!texture) return;
 
             gl.useProgram(textureProgram);
@@ -425,12 +429,13 @@
             gl.uniform1f(textureUniforms.uRotation, rotation);
             gl.uniform2f(textureUniforms.uScale, scaleX, scaleY);
             gl.uniform1i(textureUniforms.uTexture, 0);
+            gl.uniform1f(textureUniforms.uAlpha, alpha);
 
             gl.drawArrays(gl.TRIANGLES, 0, 6);
         }
 
         function drawDog() {
-            const { x, y, direction, frameIndex } = dog;
+            const { x, y, direction, frameIndex, prevFrameIndex } = dog;
 
             // Use standing texture when idle, running frames when moving
             let currentTexture;
@@ -450,6 +455,20 @@
                         }
                     }
                 }
+
+                // Motion blur: draw previous frames with decreasing opacity
+                const prevTexture = dogTextures[prevFrameIndex];
+                const prevPrevIndex = (prevFrameIndex - 1 + 6) % 6;
+                const prevPrevTexture = dogTextures[prevPrevIndex];
+
+                // Draw trail frames offset behind the dog
+                const blurOffset = dog.speed * 2;
+                if (prevPrevTexture && dog.speed > 3) {
+                    drawSprite(dogRunningBuffer, prevPrevTexture, x - blurOffset * 2 * direction, y, 0, direction, 1, 0.15);
+                }
+                if (prevTexture && dog.speed > 2) {
+                    drawSprite(dogRunningBuffer, prevTexture, x - blurOffset * direction, y, 0, direction, 1, 0.3);
+                }
             } else {
                 // Idle, grabbing, throwing - use standing pose
                 currentTexture = dogStandingTexture;
@@ -465,7 +484,7 @@
             }
 
             // Draw the dog sprite (flip based on direction)
-            drawSprite(currentBuffer, currentTexture, x, y, rotation, direction, 1);
+            drawSprite(currentBuffer, currentTexture, x, y, rotation, direction, 1, 1);
 
             // If holding a notification, draw it near the mouth (front of dog)
             if (dog.holdingRect) {
@@ -558,6 +577,7 @@
                         dog.frameTime += deltaTime * 12; // 12 frames per second base
                         if (dog.frameTime >= 1) {
                             dog.frameTime = 0;
+                            dog.prevFrameIndex = dog.frameIndex;
                             dog.frameIndex = (dog.frameIndex + 1) % 6;
                         }
                     } else {
