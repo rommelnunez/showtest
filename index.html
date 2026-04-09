@@ -181,7 +181,7 @@
         const dogTextures = new Array(6).fill(null);
         let dogStandingTexture = null;
         const dogHeight = 120;
-        const dogRunningWidth = dogHeight * 2.0; // Running frames aspect ~2.0
+        const dogRunningWidth = dogHeight * (1756 / 1097); // Same aspect ratio as standing
         const dogStandingWidth = dogHeight * (1756 / 1097); // Standing SVG aspect ratio ~1.6
 
         function loadSVGTexture(svgContent, callback) {
