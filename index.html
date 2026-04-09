@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiener Dog Rectangle Launcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            overflow: hidden;
+            background: #1a1a2e;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="glCanvas"></canvas>
+    <script>
+        // SVG wiener dog logo
+        const dogSVG = `<svg width="1756" height="1097" viewBox="0 0 1756 1097" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1358.78 5.23024C1393.63 -2.17185 1429.59 -1.77861 1463.59 6.80251C1476.3 10.0123 1486.91 16.8248 1498.57 21.2136L1530.99 33.3982C1546.45 39.1627 1551.56 52.46 1556.34 66.6091C1562.57 85.2127 1582.35 94.5797 1599.84 99.7547L1632.99 109.581C1662.07 118.162 1688.53 130.673 1715.98 143.512L1740.87 153.141C1748.15 155.958 1752.47 162.509 1754.63 168.667C1757.32 176.331 1753.06 183.798 1750.11 191.004C1740.94 213.407 1707.2 238.496 1684.87 252.186C1669.67 261.488 1653.29 268.955 1634.49 268.366C1604.43 267.383 1575.67 270.92 1546.32 275.309L1514.09 280.157C1491.89 282.057 1474.59 297.385 1469.42 319.067C1426.91 409.006 1418.06 513.946 1415.77 614.366C1414.66 664.609 1372.8 712.493 1339.72 749.438L1326.29 762.212C1293.39 793.474 1257.95 820.296 1217.28 838.505C1219.02 841.97 1216.88 845.592 1216.37 848.025L1207.13 892.568C1204.91 903.311 1214.6 913.529 1220.83 921.718C1252.33 920.67 1280.24 935.277 1301.33 958.204C1303.43 977.266 1282.93 988.14 1264.71 992.66C1257.12 994.56 1250.24 994.691 1240.48 995.215L1249.39 1001.77C1256.72 1007.2 1267.01 1015.26 1270.35 1025.02C1275.46 1040.02 1261.37 1051.48 1248.21 1053.51L1202.88 1060.46C1169.86 1065.5 1126.04 1051.94 1120.54 1025.61L1109.92 974.385C1103.9 960.89 1092.83 950.933 1094.73 934.033C1096.17 921.39 1091.45 909.402 1079.27 901.738L1076.78 862.959C1021.3 865.775 966.337 859.684 911.837 843.177C846.2 823.328 781.808 810.358 712.896 805.314C643.985 800.27 582.671 789.2 518.41 772.103C500.462 767.321 481.596 764.177 466.53 776.754C460.635 781.667 453.298 788.872 449.171 795.095C444.324 802.563 438.559 807.018 433.057 813.437C418.122 830.665 400.304 842.587 381.046 853.657L330.999 882.611L307.352 899.839L298.05 911.63C298.639 922.176 306.435 929.71 310.365 937.374C311.741 940.06 313.116 946.151 317.505 945.759C337.222 944.121 360.411 956.043 376.198 970.192C382.094 975.498 383.862 983.162 382.29 990.564C379.997 1001.31 356.087 1011.2 338.794 1012.51L314.229 1014.34L336.24 1021.29C352.486 1026.4 387.661 1048.8 384.779 1068.45C383.731 1075.59 378.884 1081.81 370.958 1085.48L356.35 1092.16C312.527 1100.81 279.905 1096.94 241.126 1073.3L232.021 1024.89C230.055 1014.28 228.483 999.669 222.915 991.153C216.954 982.048 212.303 977.266 210.928 965.148C210.338 960.039 206.997 950.475 204.246 945.824L180.86 906.782L161.209 871.016C149.811 850.251 163.96 825.228 183.153 811.93C240.209 772.431 203.723 726.446 199.53 670.177L199.857 623.078C188.066 644.564 186.625 666.443 182.04 689.37C159.31 803.873 143.654 855.885 57.0557 939.994L41.2686 952.374C28.757 962.2 17.752 974.646 0 976.415C10.1533 916.608 64.6537 879.073 86.2705 834.792C112.669 780.684 121.316 722.319 124.788 661.661C127.277 618.951 141.427 578.469 166.712 545.847C183.547 524.1 203.656 509.229 228.09 497.373C300.801 462.196 378.687 442.283 459.783 434.423C543.041 426.3 625.643 425.71 710.407 425.972L851.637 426.43C874.826 426.496 896.967 422.566 918.78 416.212L1094.2 364.987C1125.19 355.947 1146.41 328.631 1157.88 300.529L1196.2 206.922C1187.81 203.974 1183.42 196.768 1183.75 186.615L1184.14 173.907C1191.74 146.526 1206.48 123.009 1222.66 100.279L1248.73 63.6609C1262.36 44.5334 1276.9 25.9304 1301.07 17.4802L1358.78 5.23024ZM310.434 937.516C310.689 938.035 310.948 938.664 311.226 939.343C310.948 938.66 310.691 938.029 310.434 937.516ZM1217.16 838.263C1214.35 839.505 1214.99 845.695 1216.36 848.004C1215.06 845.695 1214.35 839.507 1217.16 838.264L1217.16 838.263ZM200.497 620.315C199.707 621.975 200.765 623.114 202.029 623.055C200.774 623.098 199.72 621.964 200.497 620.315ZM204.122 616.453C205.424 616.719 206.415 618.288 204.57 620.458C204.552 620.532 204.532 620.605 204.512 620.677C204.533 620.605 204.554 620.532 204.573 620.458C206.419 618.286 205.425 616.718 204.122 616.453Z" fill="black"/>
+</svg>`;
+
+        // WebGL Setup
+        const canvas = document.getElementById('glCanvas');
+        const gl = canvas.getContext('webgl');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+
+        // Enable blending for transparency
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+        // Vertex shader for colored rectangles
+        const vsColorSource = `
+            attribute vec2 aPosition;
+            attribute vec3 aColor;
+            uniform vec2 uResolution;
+            uniform vec2 uTranslation;
+            uniform float uRotation;
+            uniform vec2 uScale;
+            varying vec3 vColor;
+
+            void main() {
+                vec2 scaled = aPosition * uScale;
+                float c = cos(uRotation);
+                float s = sin(uRotation);
+                vec2 rotated = vec2(
+                    scaled.x * c - scaled.y * s,
+                    scaled.x * s + scaled.y * c
+                );
+                vec2 position = rotated + uTranslation;
+                vec2 clipSpace = (position / uResolution) * 2.0 - 1.0;
+                gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+                vColor = aColor;
+            }
+        `;
+
+        // Fragment shader for colored rectangles
+        const fsColorSource = `
+            precision mediump float;
+            varying vec3 vColor;
+
+            void main() {
+                gl_FragColor = vec4(vColor, 1.0);
+            }
+        `;
+
+        // Vertex shader for textured sprites
+        const vsTextureSource = `
+            attribute vec2 aPosition;
+            attribute vec2 aTexCoord;
+            uniform vec2 uResolution;
+            uniform vec2 uTranslation;
+            uniform float uRotation;
+            uniform vec2 uScale;
+            varying vec2 vTexCoord;
+
+            void main() {
+                vec2 scaled = aPosition * uScale;
+                float c = cos(uRotation);
+                float s = sin(uRotation);
+                vec2 rotated = vec2(
+                    scaled.x * c - scaled.y * s,
+                    scaled.x * s + scaled.y * c
+                );
+                vec2 position = rotated + uTranslation;
+                vec2 clipSpace = (position / uResolution) * 2.0 - 1.0;
+                gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+                vTexCoord = aTexCoord;
+            }
+        `;
+
+        // Fragment shader for textured sprites
+        const fsTextureSource = `
+            precision mediump float;
+            varying vec2 vTexCoord;
+            uniform sampler2D uTexture;
+
+            void main() {
+                gl_FragColor = texture2D(uTexture, vTexCoord);
+            }
+        `;
+
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error(gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
+
+        function createProgram(gl, vs, fs) {
+            const program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error(gl.getProgramInfoLog(program));
+                return null;
+            }
+            return program;
+        }
+
+        // Color program
+        const colorProgram = createProgram(gl,
+            createShader(gl, gl.VERTEX_SHADER, vsColorSource),
+            createShader(gl, gl.FRAGMENT_SHADER, fsColorSource)
+        );
+
+        const colorAttribs = {
+            aPosition: gl.getAttribLocation(colorProgram, 'aPosition'),
+            aColor: gl.getAttribLocation(colorProgram, 'aColor'),
+        };
+        const colorUniforms = {
+            uResolution: gl.getUniformLocation(colorProgram, 'uResolution'),
+            uTranslation: gl.getUniformLocation(colorProgram, 'uTranslation'),
+            uRotation: gl.getUniformLocation(colorProgram, 'uRotation'),
+            uScale: gl.getUniformLocation(colorProgram, 'uScale'),
+        };
+
+        // Texture program
+        const textureProgram = createProgram(gl,
+            createShader(gl, gl.VERTEX_SHADER, vsTextureSource),
+            createShader(gl, gl.FRAGMENT_SHADER, fsTextureSource)
+        );
+
+        const textureAttribs = {
+            aPosition: gl.getAttribLocation(textureProgram, 'aPosition'),
+            aTexCoord: gl.getAttribLocation(textureProgram, 'aTexCoord'),
+        };
+        const textureUniforms = {
+            uResolution: gl.getUniformLocation(textureProgram, 'uResolution'),
+            uTranslation: gl.getUniformLocation(textureProgram, 'uTranslation'),
+            uRotation: gl.getUniformLocation(textureProgram, 'uRotation'),
+            uScale: gl.getUniformLocation(textureProgram, 'uScale'),
+            uTexture: gl.getUniformLocation(textureProgram, 'uTexture'),
+        };
+
+        // Create texture from SVG
+        let dogTexture = null;
+        const dogAspect = 1756 / 1097;
+        const dogHeight = 120;
+        const dogWidth = dogHeight * dogAspect;
+
+        function loadDogTexture() {
+            const img = new Image();
+            const svgBlob = new Blob([dogSVG], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(svgBlob);
+
+            img.onload = () => {
+                dogTexture = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, dogTexture);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                URL.revokeObjectURL(url);
+            };
+            img.src = url;
+        }
+        loadDogTexture();
+
+        // Sprite buffer for textured quads
+        function createSpriteBuffer(width, height) {
+            const hw = width / 2;
+            const hh = height / 2;
+            const data = new Float32Array([
+                -hw, -hh, 0, 0,
+                 hw, -hh, 1, 0,
+                -hw,  hh, 0, 1,
+                -hw,  hh, 0, 1,
+                 hw, -hh, 1, 0,
+                 hw,  hh, 1, 1,
+            ]);
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+            return buffer;
+        }
+
+        const dogBuffer = createSpriteBuffer(dogWidth, dogHeight);
+
+        // Create rectangle geometry
+        function createRectBuffer(width, height, color) {
+            const hw = width / 2;
+            const hh = height / 2;
+            const data = new Float32Array([
+                -hw, -hh, color[0], color[1], color[2],
+                 hw, -hh, color[0], color[1], color[2],
+                -hw,  hh, color[0], color[1], color[2],
+                -hw,  hh, color[0], color[1], color[2],
+                 hw, -hh, color[0], color[1], color[2],
+                 hw,  hh, color[0], color[1], color[2],
+            ]);
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+            return buffer;
+        }
+
+        // Game state
+        const groundY = canvas.height - 60;
+
+        const dog = {
+            x: 150,
+            y: groundY - 40,
+            targetX: 150,
+            speed: 0,
+            maxSpeed: 10,
+            direction: 1,
+            state: 'idle',
+            holdingRect: null,
+            throwAngle: 0,
+            throwPower: 0,
+            animTime: 0,
+            bobPhase: 0,
+        };
+
+        const rectangles = [];
+        const flyingRects = [];
+        let nextSpawnTime = 1000;
+        let lastTime = 0;
+
+        // Notification icons as simple SVGs
+        const notificationIcons = [
+            { name: 'Slack', color: '#611f69', icon: `<svg viewBox="0 0 24 24" fill="white"><path d="M6 15a2 2 0 0 1-2 2a2 2 0 0 1-2-2a2 2 0 0 1 2-2h2v2zm1 0a2 2 0 0 1 2-2a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2a2 2 0 0 1-2-2v-5zm2-8a2 2 0 0 1-2-2a2 2 0 0 1 2-2a2 2 0 0 1 2 2v2H9zm0 1a2 2 0 0 1 2 2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2a2 2 0 0 1 2-2h5zm8 2a2 2 0 0 1 2-2a2 2 0 0 1 2 2a2 2 0 0 1-2 2h-2v-2zm-1 0a2 2 0 0 1-2 2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2a2 2 0 0 1 2 2v5zm-2 8a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2v-2h2zm0-1a2 2 0 0 1-2-2a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2a2 2 0 0 1-2 2h-5z"/></svg>` },
+            { name: 'iMessage', color: '#34c759', icon: `<svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.5 2 2 5.8 2 10.5c0 2.5 1.2 4.8 3.2 6.4L4 22l4.8-2.3c1 .3 2.1.5 3.2.5c5.5 0 10-3.8 10-8.5S17.5 2 12 2z"/></svg>` },
+            { name: 'Dropbox', color: '#0061ff', icon: `<svg viewBox="0 0 24 24" fill="white"><path d="M12 6.2L6 10l6 3.8L12 6.2zM6 10l-6 3.8l6 3.8l6-3.8L6 10zm12 0l-6 3.8l6 3.8l6-3.8l-6-3.8zm-6 3.8l-6 3.8l6 3.8l6-3.8l-6-3.8zM6 2.4L0 6.2l6 3.8l6-3.8L6 2.4zm12 0l-6 3.8l6 3.8l6-3.8l-6-3.8z"/></svg>` },
+            { name: 'Gmail', color: '#ea4335', icon: `<svg viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5l-8-5V6l8 5l8-5v2z"/></svg>` },
+            { name: 'Discord', color: '#5865f2', icon: `<svg viewBox="0 0 24 24" fill="white"><path d="M20.3 4.4A19 19 0 0 0 15.5 3a12 12 0 0 0-.6 1.2a17.4 17.4 0 0 0-5.8 0A12 12 0 0 0 8.5 3A19 19 0 0 0 3.7 4.4A20 20 0 0 0 .2 17.8a19.2 19.2 0 0 0 5.8 2.9a14 14 0 0 0 1.2-2a12 12 0 0 1-2-.9l.5-.4a13.5 13.5 0 0 0 11.6 0l.5.4a12 12 0 0 1-2 .9a14 14 0 0 0 1.2 2a19.2 19.2 0 0 0 5.8-2.9A20 20 0 0 0 20.3 4.4zM8 14.8c-1.1 0-2-1-2-2.3s.9-2.3 2-2.3s2 1 2 2.3s-.9 2.3-2 2.3zm8 0c-1.1 0-2-1-2-2.3s.9-2.3 2-2.3s2 1 2 2.3s-.9 2.3-2 2.3z"/></svg>` },
+            { name: 'Calendar', color: '#ff9500', icon: `<svg viewBox="0 0 24 24" fill="white"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>` },
+            { name: 'Zoom', color: '#2d8cff', icon: `<svg viewBox="0 0 24 24" fill="white"><path d="M4 4h11a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm14 4l4-2v8l-4-2V8z"/></svg>` },
+            { name: 'Teams', color: '#6264a7', icon: `<svg viewBox="0 0 24 24" fill="white"><path d="M19.2 6.4a2.4 2.4 0 1 0 0-4.8a2.4 2.4 0 0 0 0 4.8zm-4.8 0a2.4 2.4 0 1 0 0-4.8a2.4 2.4 0 0 0 0 4.8zM19.2 8H12v8h4.8a2.4 2.4 0 0 0 2.4-2.4V8zM9.6 6.4a3.2 3.2 0 1 0 0-6.4a3.2 3.2 0 0 0 0 6.4zM12 8H2.4A2.4 2.4 0 0 0 0 10.4v6.4A2.4 2.4 0 0 0 2.4 19.2h9.6V8z"/></svg>` },
+        ];
+
+        const notifColor = [0.25, 0.25, 0.28]; // Dark gray
+        const notifWidth = 180;
+        const notifHeight = 60;
+
+        // Create notification textures
+        let notificationTextures = [];
+
+        function createNotificationTexture(notif) {
+            const offscreen = document.createElement('canvas');
+            offscreen.width = 360;
+            offscreen.height = 120;
+            const ctx = offscreen.getContext('2d');
+
+            // Dark gray background with rounded corners
+            ctx.fillStyle = '#404045';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, 360, 120, 16);
+            ctx.fill();
+
+            // App icon circle
+            ctx.fillStyle = notif.color;
+            ctx.beginPath();
+            ctx.arc(50, 60, 30, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw icon
+            const iconImg = new Image();
+            const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24">${notif.icon.match(/<path[^>]*>/)[0].replace('fill="white"', 'fill="white"')}</svg>`;
+            iconImg.src = 'data:image/svg+xml,' + encodeURIComponent(iconSvg);
+
+            // App name
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText(notif.name, 95, 45);
+
+            // Notification text
+            ctx.fillStyle = '#a0a0a5';
+            ctx.font = '20px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('New notification', 95, 80);
+
+            // Time
+            ctx.fillStyle = '#808085';
+            ctx.font = '18px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('now', 310, 35);
+
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, offscreen);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+            return texture;
+        }
+
+        // Initialize notification textures
+        setTimeout(() => {
+            notificationTextures = notificationIcons.map(n => createNotificationTexture(n));
+        }, 100);
+
+        const notifBuffer = createSpriteBuffer(notifWidth, notifHeight);
+
+        function spawnRectangle() {
+            const x = 100 + Math.random() * (canvas.width - 200);
+            const notifIndex = Math.floor(Math.random() * notificationIcons.length);
+
+            rectangles.push({
+                x: x,
+                y: -notifHeight,
+                width: notifWidth,
+                height: notifHeight,
+                notifIndex: notifIndex,
+                vy: 0,
+                rotation: 0,
+                grounded: false,
+            });
+        }
+
+        function drawRect(buffer, x, y, rotation = 0, scaleX = 1, scaleY = 1) {
+            gl.useProgram(colorProgram);
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.vertexAttribPointer(colorAttribs.aPosition, 2, gl.FLOAT, false, 20, 0);
+            gl.vertexAttribPointer(colorAttribs.aColor, 3, gl.FLOAT, false, 20, 8);
+            gl.enableVertexAttribArray(colorAttribs.aPosition);
+            gl.enableVertexAttribArray(colorAttribs.aColor);
+
+            gl.uniform2f(colorUniforms.uResolution, canvas.width, canvas.height);
+            gl.uniform2f(colorUniforms.uTranslation, x, y);
+            gl.uniform1f(colorUniforms.uRotation, rotation);
+            gl.uniform2f(colorUniforms.uScale, scaleX, scaleY);
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+
+        function drawNotification(notifIndex, x, y, rotation = 0, scaleX = 1, scaleY = 1) {
+            if (!notificationTextures[notifIndex]) return;
+            drawSprite(notifBuffer, notificationTextures[notifIndex], x, y, rotation, scaleX, scaleY);
+        }
+
+        function drawSprite(buffer, texture, x, y, rotation = 0, scaleX = 1, scaleY = 1) {
+            if (!texture) return;
+
+            gl.useProgram(textureProgram);
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.vertexAttribPointer(textureAttribs.aPosition, 2, gl.FLOAT, false, 16, 0);
+            gl.vertexAttribPointer(textureAttribs.aTexCoord, 2, gl.FLOAT, false, 16, 8);
+            gl.enableVertexAttribArray(textureAttribs.aPosition);
+            gl.enableVertexAttribArray(textureAttribs.aTexCoord);
+
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+
+            gl.uniform2f(textureUniforms.uResolution, canvas.width, canvas.height);
+            gl.uniform2f(textureUniforms.uTranslation, x, y);
+            gl.uniform1f(textureUniforms.uRotation, rotation);
+            gl.uniform2f(textureUniforms.uScale, scaleX, scaleY);
+            gl.uniform1i(textureUniforms.uTexture, 0);
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+
+        function drawDog() {
+            const { x, y, direction, animTime, bobPhase } = dog;
+
+            // Running bob animation
+            const bob = dog.state === 'running' ? Math.sin(bobPhase) * 5 : 0;
+
+            // Throwing rotation
+            let rotation = 0;
+            if (dog.state === 'throwing') {
+                rotation = Math.sin(dog.throwPower * Math.PI * 2) * 0.3 * direction;
+            }
+
+            // Draw the dog sprite (flip based on direction)
+            drawSprite(dogBuffer, dogTexture, x, y + bob, rotation, direction, 1);
+
+            // If holding a notification, draw it near the mouth (front of dog)
+            if (dog.holdingRect) {
+                const rect = dog.holdingRect;
+                const holdX = x + (dogWidth * 0.35) * direction;
+                const holdY = y + bob - 10;
+                drawNotification(rect.notifIndex, holdX, holdY, dog.throwAngle * direction, direction, 1);
+            }
+        }
+
+        function drawGround() {
+            const groundBuffer = createRectBuffer(canvas.width, 60, [0.0, 0.0, 0.0]);
+            drawRect(groundBuffer, canvas.width / 2, groundY + 30, 0, 1, 1);
+        }
+
+        function findNearestRect() {
+            let nearest = null;
+            let nearestDist = Infinity;
+
+            for (const rect of rectangles) {
+                if (rect.grounded) {
+                    const dist = Math.abs(rect.x - dog.x);
+                    if (dist < nearestDist) {
+                        nearestDist = dist;
+                        nearest = rect;
+                    }
+                }
+            }
+            return nearest;
+        }
+
+        function update(deltaTime) {
+            dog.animTime += deltaTime;
+
+            // Spawn rectangles
+            nextSpawnTime -= deltaTime * 1000;
+            if (nextSpawnTime <= 0 && rectangles.length < 5 && !dog.holdingRect) {
+                spawnRectangle();
+                nextSpawnTime = 2000 + Math.random() * 2000;
+            }
+
+            // Update falling rectangles
+            for (const rect of rectangles) {
+                if (!rect.grounded) {
+                    rect.vy += 0.5;
+                    rect.y += rect.vy;
+                    rect.rotation += 0.02;
+
+                    if (rect.y + rect.height / 2 >= groundY) {
+                        rect.y = groundY - rect.height / 2;
+                        rect.grounded = true;
+                        rect.vy = 0;
+                        rect.rotation = 0;
+                    }
+                }
+            }
+
+            // Update flying rectangles
+            for (let i = flyingRects.length - 1; i >= 0; i--) {
+                const rect = flyingRects[i];
+                rect.x += rect.vx;
+                rect.y += rect.vy;
+                rect.vy += 0.3;
+                rect.rotation += rect.vr;
+
+                if (rect.x < -200 || rect.x > canvas.width + 200 || rect.y > canvas.height + 200) {
+                    flyingRects.splice(i, 1);
+                }
+            }
+
+            // Dog AI
+            switch (dog.state) {
+                case 'idle':
+                    const target = findNearestRect();
+                    if (target) {
+                        dog.targetX = target.x;
+                        dog.state = 'running';
+                    }
+                    break;
+
+                case 'running':
+                    const diff = dog.targetX - dog.x;
+                    dog.direction = diff > 0 ? 1 : -1;
+
+                    if (Math.abs(diff) > 50) {
+                        dog.speed = Math.min(dog.speed + 0.5, dog.maxSpeed);
+                        dog.x += dog.direction * dog.speed;
+                        dog.bobPhase += dog.speed * 0.4;
+                    } else {
+                        dog.speed = 0;
+                        dog.state = 'grabbing';
+                    }
+                    break;
+
+                case 'grabbing':
+                    // Quick grab
+                    const nearest = findNearestRect();
+                    if (nearest && Math.abs(nearest.x - dog.x) < 100) {
+                        dog.holdingRect = nearest;
+                        const idx = rectangles.indexOf(nearest);
+                        if (idx !== -1) rectangles.splice(idx, 1);
+                        dog.state = 'throwing';
+                        dog.throwAngle = 0;
+                        dog.throwPower = 0;
+                    } else {
+                        dog.state = 'idle';
+                    }
+                    break;
+
+                case 'throwing':
+                    dog.throwPower += 0.04;
+                    dog.throwAngle = Math.sin(dog.throwPower * 4) * 0.5;
+
+                    if (dog.throwPower >= 1) {
+                        // Launch the rectangle!
+                        const rect = dog.holdingRect;
+                        const launchAngle = -Math.PI / 4 + (Math.random() - 0.5) * 0.5;
+                        const power = 22 + Math.random() * 10;
+
+                        flyingRects.push({
+                            x: dog.x + (dogWidth * 0.4) * dog.direction,
+                            y: dog.y - 20,
+                            width: rect.width,
+                            height: rect.height,
+                            notifIndex: rect.notifIndex,
+                            vx: Math.cos(launchAngle) * power * dog.direction,
+                            vy: Math.sin(launchAngle) * power,
+                            rotation: 0,
+                            vr: (Math.random() - 0.5) * 0.4,
+                            direction: dog.direction,
+                        });
+
+                        dog.holdingRect = null;
+                        dog.state = 'idle';
+                        dog.throwPower = 0;
+                    }
+                    break;
+            }
+        }
+
+        function render() {
+            // Hot pink background #FF007A
+            gl.clearColor(1.0, 0.0, 0.478, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            drawGround();
+
+            // Draw grounded notifications
+            for (const rect of rectangles) {
+                drawNotification(rect.notifIndex, rect.x, rect.y, rect.rotation, 1, 1);
+            }
+
+            // Draw flying notifications
+            for (const rect of flyingRects) {
+                drawNotification(rect.notifIndex, rect.x, rect.y, rect.rotation, rect.direction, 1);
+            }
+
+            drawDog();
+        }
+
+        function gameLoop(time) {
+            const deltaTime = (time - lastTime) / 1000;
+            lastTime = time;
+
+            if (deltaTime < 0.1) {
+                update(deltaTime);
+            }
+            render();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+        });
+
+        // Start the game
+        spawnRectangle();
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>
