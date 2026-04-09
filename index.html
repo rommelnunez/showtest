@@ -408,7 +408,7 @@
 
         function drawNotification(notifIndex, x, y, rotation = 0, scaleX = 1, scaleY = 1) {
             if (!notificationTextures[notifIndex]) return;
-            drawSprite(notifBuffer, notificationTextures[notifIndex], x, y, rotation, scaleX, scaleY);
+            drawSprite(notifBuffer, notificationTextures[notifIndex], x, y, rotation, scaleX, scaleY, 1);
         }
 
         function drawSprite(buffer, texture, x, y, rotation = 0, scaleX = 1, scaleY = 1, alpha = 1) {
