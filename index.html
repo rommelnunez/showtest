@@ -22,6 +22,9 @@
 <body>
     <canvas id="glCanvas"></canvas>
     <script>
+        // Standing pose for idle
+        const dogStandingSVG = `<svg width="1756" height="1097" viewBox="0 0 1756 1097" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1358.78 5.23024C1393.63 -2.17185 1429.59 -1.77861 1463.59 6.80251C1476.3 10.0123 1486.91 16.8248 1498.57 21.2136L1530.99 33.3982C1546.45 39.1627 1551.56 52.46 1556.34 66.6091C1562.57 85.2127 1582.35 94.5797 1599.84 99.7547L1632.99 109.581C1662.07 118.162 1688.53 130.673 1715.98 143.512L1740.87 153.141C1748.15 155.958 1752.47 162.509 1754.63 168.667C1757.32 176.331 1753.06 183.798 1750.11 191.004C1740.94 213.407 1707.2 238.496 1684.87 252.186C1669.67 261.488 1653.29 268.955 1634.49 268.366C1604.43 267.383 1575.67 270.92 1546.32 275.309L1514.09 280.157C1491.89 282.057 1474.59 297.385 1469.42 319.067C1426.91 409.006 1418.06 513.946 1415.77 614.366C1414.66 664.609 1372.8 712.493 1339.72 749.438L1326.29 762.212C1293.39 793.474 1257.95 820.296 1217.28 838.505C1219.02 841.97 1216.88 845.592 1216.37 848.025L1207.13 892.568C1204.91 903.311 1214.6 913.529 1220.83 921.718C1252.33 920.67 1280.24 935.277 1301.33 958.204C1303.43 977.266 1282.93 988.14 1264.71 992.66C1257.12 994.56 1250.24 994.691 1240.48 995.215L1249.39 1001.77C1256.72 1007.2 1267.01 1015.26 1270.35 1025.02C1275.46 1040.02 1261.37 1051.48 1248.21 1053.51L1202.88 1060.46C1169.86 1065.5 1126.04 1051.94 1120.54 1025.61L1109.92 974.385C1103.9 960.89 1092.83 950.933 1094.73 934.033C1096.17 921.39 1091.45 909.402 1079.27 901.738L1076.78 862.959C1021.3 865.775 966.337 859.684 911.837 843.177C846.2 823.328 781.808 810.358 712.896 805.314C643.985 800.27 582.671 789.2 518.41 772.103C500.462 767.321 481.596 764.177 466.53 776.754C460.635 781.667 453.298 788.872 449.171 795.095C444.324 802.563 438.559 807.018 433.057 813.437C418.122 830.665 400.304 842.587 381.046 853.657L330.999 882.611L307.352 899.839L298.05 911.63C298.639 922.176 306.435 929.71 310.365 937.374C311.741 940.06 313.116 946.151 317.505 945.759C337.222 944.121 360.411 956.043 376.198 970.192C382.094 975.498 383.862 983.162 382.29 990.564C379.997 1001.31 356.087 1011.2 338.794 1012.51L314.229 1014.34L336.24 1021.29C352.486 1026.4 387.661 1048.8 384.779 1068.45C383.731 1075.59 378.884 1081.81 370.958 1085.48L356.35 1092.16C312.527 1100.81 279.905 1096.94 241.126 1073.3L232.021 1024.89C230.055 1014.28 228.483 999.669 222.915 991.153C216.954 982.048 212.303 977.266 210.928 965.148C210.338 960.039 206.997 950.475 204.246 945.824L180.86 906.782L161.209 871.016C149.811 850.251 163.96 825.228 183.153 811.93C240.209 772.431 203.723 726.446 199.53 670.177L199.857 623.078C188.066 644.564 186.625 666.443 182.04 689.37C159.31 803.873 143.654 855.885 57.0557 939.994L41.2686 952.374C28.757 962.2 17.752 974.646 0 976.415C10.1533 916.608 64.6537 879.073 86.2705 834.792C112.669 780.684 121.316 722.319 124.788 661.661C127.277 618.951 141.427 578.469 166.712 545.847C183.547 524.1 203.656 509.229 228.09 497.373C300.801 462.196 378.687 442.283 459.783 434.423C543.041 426.3 625.643 425.71 710.407 425.972L851.637 426.43C874.826 426.496 896.967 422.566 918.78 416.212L1094.2 364.987C1125.19 355.947 1146.41 328.631 1157.88 300.529L1196.2 206.922C1187.81 203.974 1183.42 196.768 1183.75 186.615L1184.14 173.907C1191.74 146.526 1206.48 123.009 1222.66 100.279L1248.73 63.6609C1262.36 44.5334 1276.9 25.9304 1301.07 17.4802L1358.78 5.23024ZM310.434 937.516C310.689 938.035 310.948 938.664 311.226 939.343C310.948 938.66 310.691 938.029 310.434 937.516ZM1217.16 838.263C1214.35 839.505 1214.99 845.695 1216.36 848.004C1215.06 845.695 1214.35 839.507 1217.16 838.264L1217.16 838.263ZM200.497 620.315C199.707 621.975 200.765 623.114 202.029 623.055C200.774 623.098 199.72 621.964 200.497 620.315ZM204.122 616.453C205.424 616.719 206.415 618.288 204.57 620.458C204.552 620.532 204.532 620.605 204.512 620.677C204.533 620.605 204.554 620.532 204.573 620.458C206.419 618.286 205.425 616.718 204.122 616.453Z" fill="black"/></svg>`;
+
         // Animation frames for wiener dog gallop
         const dogFrames = [
             `<svg width="423" height="170" viewBox="0 0 423 170" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M315.14 0C320.186 0.256676 338.345 8.67974 345.202 11.1277C345.914 10.9145 346.637 10.7427 347.369 10.6125C362.188 7.83564 374.849 12.5433 386.854 20.8093C388.21 23.8722 389.642 26.8999 391.149 29.8906C398.854 35.2885 416.182 40.5561 422.319 47.9831C422.784 49.723 423.08 50.2881 422.177 52.2246C420.697 55.3986 417.202 57.6078 414.856 59.4601C398.008 72.7587 386.528 58.9627 368.012 66.262C357.956 70.2258 346.437 84.2664 343.33 94.2831C341.156 101.29 341.364 105.78 338.085 113.226C340.556 113.89 347.46 115.645 349.389 116.378C365.385 122.456 366.912 125.255 383.895 121.738C397.164 126.179 389.319 132.687 381.434 137.899L380.69 137.958C371.7 138.609 357.241 137.778 348.954 134.233C360.885 144.321 367.132 139.145 379.33 145.915C382.04 148.529 378.969 151.602 377.516 153.001C371.767 158.535 365.253 158.621 357.655 158.406C348.311 152.116 333.795 147.498 322.659 145.079C317.085 143.868 309.259 143.496 304.162 141.281C303.855 141.464 303.545 141.644 303.233 141.821C269.083 161.189 253.874 151.977 217.908 144.917C205.049 142.393 188.686 141.5 175.241 138.562C168.666 137.125 153.401 131.899 148.289 132.35C120.641 134.792 120.938 153.138 90.5624 144.685C71.1876 137.435 69.8266 151.868 58.5375 163.096C52.5071 169.093 48.7038 169.568 40.6432 169.514C40.5659 164.058 40.4101 161.938 42.7406 157.068C37.3189 158.791 32.9362 160.473 27.9361 156.675C27.0963 155.41 26.0918 153.587 26.6308 152.098C29.2005 141.058 48.3219 138.069 53.6184 132.551C62.8325 122.952 59.9298 110.848 77.8401 118.45C79.2036 119.028 79.7989 118.18 80.8278 117.148C83.2132 114.755 83.1053 111.206 83.7976 108.112C85.1784 97.8842 91.4827 95.0174 99.0114 89.3609L98.7949 88.5494C87.2177 84.5965 61.6369 96.5396 47.392 96.7886C28.5336 97.1181 13.9421 91.3198 0 79.2005C14.7259 81.5591 26.1969 88.3719 40.562 88.762C59.2183 89.2684 73.9857 77.1337 92.5691 75.3861C103.81 74.3281 106.735 76.1434 117.653 77.5226C120.289 77.8552 129.913 76.9996 133.474 77.0896C154.538 77.6202 175.489 75.5975 196.526 74.8006C209.604 74.3058 224.389 76.273 237.267 74.6717C244.818 73.7324 256.312 69.2265 264.01 66.9286C270.981 64.2814 282.159 63.2592 288.397 59.4288C297.299 53.9639 306.767 44.3858 314.771 37.3368C308.1 35.616 302.876 32.3686 298.352 26.8712C295.104 22.9246 288.319 11.3691 294.9 7.32485C298.825 4.91325 304.464 6.76616 308.661 7.96207C310.586 3.80289 311.1 2.1345 315.14 0Z" fill="black"/></svg>`,
@@ -176,28 +179,42 @@
 
         // Create textures from SVG animation frames
         const dogTextures = new Array(6).fill(null);
+        let dogStandingTexture = null;
         const dogHeight = 120;
         const dogWidth = dogHeight * 2.5; // Approximate aspect ratio
 
-        function loadDogTextures() {
-            dogFrames.forEach((svgContent, index) => {
-                const img = new Image();
-                const svgBlob = new Blob([svgContent], { type: 'image/svg+xml' });
-                const url = URL.createObjectURL(svgBlob);
+        function loadSVGTexture(svgContent, callback) {
+            const img = new Image();
+            const svgBlob = new Blob([svgContent], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(svgBlob);
 
-                img.onload = () => {
-                    const texture = gl.createTexture();
-                    gl.bindTexture(gl.TEXTURE_2D, texture);
-                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            img.onload = () => {
+                const texture = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                callback(texture);
+                URL.revokeObjectURL(url);
+            };
+            img.src = url;
+        }
+
+        function loadDogTextures() {
+            // Load standing pose
+            loadSVGTexture(dogStandingSVG, (texture) => {
+                dogStandingTexture = texture;
+                console.log('Loaded standing pose');
+            });
+
+            // Load running frames
+            dogFrames.forEach((svgContent, index) => {
+                loadSVGTexture(svgContent, (texture) => {
                     dogTextures[index] = texture;
                     console.log('Loaded frame', index);
-                    URL.revokeObjectURL(url);
-                };
-                img.src = url;
+                });
             });
         }
         loadDogTextures();
@@ -340,8 +357,19 @@
 
         const notifBuffer = createSpriteBuffer(notifWidth, notifHeight);
 
+        let lastSpawnSide = 'right';
+
         function spawnRectangle() {
-            const x = 100 + Math.random() * (canvas.width - 200);
+            // Alternate sides - spawn on opposite side from dog
+            let x;
+            if (lastSpawnSide === 'right') {
+                x = 100 + Math.random() * 150; // Left side
+                lastSpawnSide = 'left';
+            } else {
+                x = canvas.width - 100 - Math.random() * 150; // Right side
+                lastSpawnSide = 'right';
+            }
+
             const notifIndex = Math.floor(Math.random() * notificationIcons.length);
 
             rectangles.push({
@@ -402,15 +430,22 @@
         function drawDog() {
             const { x, y, direction, frameIndex } = dog;
 
-            // Get current animation frame texture - find first available if current not loaded
-            let currentTexture = dogTextures[frameIndex];
-            if (!currentTexture) {
-                for (let i = 0; i < dogTextures.length; i++) {
-                    if (dogTextures[i]) {
-                        currentTexture = dogTextures[i];
-                        break;
+            // Use standing texture when idle, running frames when moving
+            let currentTexture;
+            if (dog.state === 'running') {
+                currentTexture = dogTextures[frameIndex];
+                // Fallback if frame not loaded
+                if (!currentTexture) {
+                    for (let i = 0; i < dogTextures.length; i++) {
+                        if (dogTextures[i]) {
+                            currentTexture = dogTextures[i];
+                            break;
+                        }
                     }
                 }
+            } else {
+                // Idle, grabbing, throwing - use standing pose
+                currentTexture = dogStandingTexture;
             }
             if (!currentTexture) return;
 
